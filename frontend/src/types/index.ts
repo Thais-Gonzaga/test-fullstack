@@ -8,7 +8,7 @@ export type CustomerStatus = {
 
 export enum Status {
   ACTIVE = 'ACTIVE',
-  DEACTIVE = 'DEACTIVE',
+  DISABLED = 'DISABLED',
   INACTIVE = 'INACTIVE',
-  WAITING_APROVAL = 'WAITING_APROVAL',
+  WAITING_APPROVAL = 'WAITING_APPROVAL',
 }

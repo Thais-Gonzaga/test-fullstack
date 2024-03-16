@@ -1,5 +1,6 @@
 import CustomersData from '@/components/customerData';
 import CustomersStatus from '@/components/customerStatus';
+import HeaderCustomers from '@/components/headerCustomers';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Status } from '@/types';
@@ -17,7 +18,7 @@ const mocklist = [
     email: 'John@email.com',
     individualTaxpayer: '16345678900',
     phone: '12345628900',
-    status: Status.DEACTIVE,
+    status: Status.DISABLED,
   },
   {
     name: 'John',
@@ -31,26 +32,29 @@ const mocklist = [
     email: 'John@email.com',
     individualTaxpayer: '18345678900',
     phone: '12345648900',
-    status: Status.WAITING_APROVAL,
+    status: Status.WAITING_APPROVAL,
   },
 ];
 
 function CustomersList() {
   return (
-    <div className="p-6 max-w-4xl mx-auto space-y-4">
-      {mocklist.map(({ name, individualTaxpayer, email, phone, status }) => (
-        <Card
-          key={individualTaxpayer}
-          className="flex justify-around items-center"
-        >
-          <CustomersData text={name} subText={email} />
-          <CustomersData text={individualTaxpayer} subText={phone} />
-          <CustomersStatus status={status} />
-          <div>
-            <Button variant="outline">Editar</Button>
-          </div>
-        </Card>
-      ))}
+    <div className="flex-col min-w-4xl ">
+      <HeaderCustomers />
+      <div className="p-6 mx-auto  space-y-4">
+        {mocklist.map(({ name, individualTaxpayer, email, phone, status }) => (
+          <Card
+            key={individualTaxpayer}
+            className="flex justify-around items-center"
+          >
+            <CustomersData text={name} subText={email} />
+            <CustomersData text={individualTaxpayer} subText={phone} />
+            <CustomersStatus status={status} />
+            <div>
+              <Button variant="outline">Editar</Button>
+            </div>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }
