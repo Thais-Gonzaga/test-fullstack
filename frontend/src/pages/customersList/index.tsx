@@ -1,47 +1,51 @@
+import CustomersData from '@/components/customerData';
+import CustomersStatus from '@/components/customerStatus';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Status } from '@/types';
 
 const mocklist = [
   {
     name: 'John',
     email: 'John@email.com',
-    individualTaxpayer: '12345678900',
-    phone: '12345678900',
-    status: 'Ativo',
+    individualTaxpayer: '15345678900',
+    phone: '11345618900',
+    status: Status.ACTIVE,
   },
   {
     name: 'John',
     email: 'John@email.com',
-    individualTaxpayer: '13345678900',
-    phone: '12345678900',
-    status: 'Ativo',
+    individualTaxpayer: '16345678900',
+    phone: '12345628900',
+    status: Status.DEACTIVE,
   },
   {
     name: 'John',
     email: 'John@email.com',
-    individualTaxpayer: '14345678900',
-    phone: '12345678900',
-    status: 'Ativo',
+    individualTaxpayer: '17345678900',
+    phone: '1345638900',
+    status: Status.INACTIVE,
+  },
+  {
+    name: 'John',
+    email: 'John@email.com',
+    individualTaxpayer: '18345678900',
+    phone: '12345648900',
+    status: Status.WAITING_APROVAL,
   },
 ];
 
 function CustomersList() {
   return (
     <div className="p-6 max-w-4xl mx-auto space-y-4">
-      {mocklist.map((customer) => (
+      {mocklist.map(({ name, individualTaxpayer, email, phone, status }) => (
         <Card
-          key={customer.individualTaxpayer}
+          key={individualTaxpayer}
           className="flex justify-around items-center"
         >
-          <div>
-            <h4>{customer.name}</h4>
-            <p>{customer.email}</p>
-          </div>
-          <div>
-            <h4>{customer.individualTaxpayer}</h4>
-            <p>{customer.email}</p>
-          </div>
-          <div>{customer.status}</div>
+          <CustomersData text={name} subText={email} />
+          <CustomersData text={individualTaxpayer} subText={phone} />
+          <CustomersStatus status={status} />
           <div>
             <Button variant="outline">Editar</Button>
           </div>

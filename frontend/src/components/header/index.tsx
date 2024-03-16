@@ -1,12 +1,12 @@
-import logo from '../../../public/logoHeader.png'
+import logo from '/logoHeader.png';
 function Header() {
-    return (
-      <div className="bg-black" >
-        <div className="container mx-auto flex justify-center">
-       <img src={logo} alt='logo uol' className='h-12'/>
-        </div>
+  return (
+    <div className="bg-black">
+      <div className="container mx-auto flex justify-center">
+        <img src={logo} alt="logo uol" className="h-12" />
       </div>
-    );
-  }
-    
-    export default Header;
+    </div>
+  );
+}
+
+export default Header;
