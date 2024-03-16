@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import CustomersList from './pages/customersList';
+import NewCustomer from './pages/newCustomer';
 import Header from './components/header';
 function App() {
   return (
@@ -7,6 +8,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<CustomersList />} />
+        <Route path="/customers" element={<NewCustomer />} />
       </Routes>
     </>
   );
