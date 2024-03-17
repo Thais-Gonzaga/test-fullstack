@@ -12,3 +12,12 @@ export enum Status {
   INACTIVE = 'INACTIVE',
   WAITING_APPROVAL = 'WAITING_APPROVAL',
 }
+
+export type Customers = {
+  id?: string;
+  name: string;
+  email: string;
+  individualTaxpayer: string;
+  phone: string;
+  status: Status;
+};

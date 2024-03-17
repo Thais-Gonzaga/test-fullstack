@@ -1,6 +1,6 @@
 import HeaderCustomers from '@/components/headerCustomers';
-
 import { zodResolver } from '@hookform/resolvers/zod';
+import useSWRMutation from 'swr/mutation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
@@ -20,6 +20,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Link } from 'react-router-dom';
+import { sendRequest } from '@/services/backend/fetcher';
+import { Status } from '@/types';
 // import { toast } from '@/components/ui/use-toast';
 
 const FormSchema = z.object({
@@ -33,10 +35,12 @@ const FormSchema = z.object({
   individualTaxpayer: z.string().min(1, {
     message: 'Digite CPF do cliente.',
   }),
-  status: z.string({ required_error: 'Selecione um status' }),
+  status: z.nativeEnum(Status),
 });
 
 function NewCustomer() {
+  const { trigger, isMutating } = useSWRMutation('/customers', sendRequest);
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -47,16 +51,13 @@ function NewCustomer() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    // toast({
-    //   title: 'You submitted the following values:',
-    //   description: (
-    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-    //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-    //     </pre>
-    //   ),
-    // });
-    console.log(data);
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    try {
+      const result = await trigger(data);
+      console.log('result', result);
+    } catch (e) {
+      console.log(e);
+    }
   }
   return (
     <div className="flex-col min-w-4xl ">
@@ -134,9 +135,12 @@ function NewCustomer() {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="ativo">Ativo</SelectItem>
-                    <SelectItem value="inativo">Inativo</SelectItem>
-                    <SelectItem value="desativado">Desativado</SelectItem>
+                    <SelectItem value={Status.ACTIVE}>Ativo</SelectItem>
+                    <SelectItem value={Status.INACTIVE}>Inativo</SelectItem>
+                    <SelectItem value={Status.DISABLED}>Desativado</SelectItem>
+                    <SelectItem value={Status.WAITING_APPROVAL}>
+                      Aguardando Aprovação
+                    </SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -144,7 +148,7 @@ function NewCustomer() {
             )}
           />
           <div>
-            <Button type="submit" variant="secondary">
+            <Button type="submit" variant="secondary" disabled={isMutating}>
               Criar
             </Button>
             <Button asChild variant="outline">
