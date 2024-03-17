@@ -1,11 +1,11 @@
+import { Status } from "../../types";
+
 interface Customers {
-  id?: number;
   name: string;
   email: string;
-  cpf: number;
-  phone: number;
-  status: string;
-
+  individualTaxpayer: string;
+  phone: string;
+  status: Status;
 }
 
-export default Customers
+export default Customers;

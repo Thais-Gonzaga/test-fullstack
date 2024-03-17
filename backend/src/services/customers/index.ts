@@ -1,34 +1,31 @@
-import Customer from '../../interface/customers';
+import { Repository } from "typeorm";
+import { AppDataSource } from "../../database";
+import CustomerType from "../../interface/customers";
+import { Customer } from "../../models/Customers.entity";
 
-let id = 0
-let status = "Aguardando ativação"
 class CustomersService {
-public db:unknown[]
+  public repository: Repository<Customer>;
 
   constructor() {
-    this.db = []
+    this.repository = AppDataSource.getRepository(Customer);
   }
 
-  public async create(customer: Customer) {
-    id += 1
-    const result = this.db.push({...customer, id, status});
-    return result
+  public async create(customer: CustomerType) {
+    const { email } = customer;
+    const result = await this.repository.save(customer);
+    return this.repository.findOne({ where: { email } });
   }
 
   public async getAll() {
-    id += 1
-    const result = this.db;
-    return result
+    const result = await this.repository.find();
+    return result;
   }
 
   public async getId(id: string) {
-    console.log(id)
-    // @ts-ignore
-    const result = this.db.find((e)=> e.id === +id)
-    console.log(result)
-    return result
+    const result = await this.repository.findOneBy({ id });
+    console.log(result);
+    return result;
   }
-
 }
 
 export default CustomersService;
