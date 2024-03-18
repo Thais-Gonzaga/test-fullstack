@@ -21,10 +21,3 @@ function CustomersStatus({ status }: CustomerStatus) {
 }
 
 export default CustomersStatus;
-
-// const statusColor = {
-//   [Status.ACTIVE]: 'bg-active-green',
-//   [Status.DISABLED]: 'bg-disabled-gray',
-//   [Status.INACTIVE]: 'bg-inactive-red',
-//   [Status.WAITING_APPROVAL]: 'bg-waiting-yellow',
-// };

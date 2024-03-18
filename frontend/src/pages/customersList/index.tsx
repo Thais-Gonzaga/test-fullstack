@@ -10,7 +10,6 @@ import useSWR from 'swr';
 
 function CustomersList() {
   const { data = [] } = useSWR<Customers[]>('/customers', fetcher);
-  console.log(data);
   return (
     <div className="flex-col w-[90%] max-[663px]:w-full m-auto">
       <HeaderCustomers />
