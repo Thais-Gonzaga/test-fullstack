@@ -10,9 +10,22 @@ class CustomersService {
     this.repository = AppDataSource.getRepository(Customer);
   }
 
+  public async checkIndividualTaxpayerExists(individualTaxpayer: string) {
+    const checkCustomer = await this.repository.findOne({
+      where: { individualTaxpayer },
+    });
+
+    if (checkCustomer)
+      throw {
+        message: "individual Taxpayer already exists",
+        status: 409,
+      };
+  }
+
   public async create(customer: CustomerType) {
-    const { email } = customer;
-    const result = await this.repository.save(customer);
+    const { individualTaxpayer, email } = customer;
+    await this.checkIndividualTaxpayerExists(individualTaxpayer);
+    await this.repository.save(customer);
     return this.repository.findOne({ where: { email } });
   }
 
@@ -23,12 +36,10 @@ class CustomersService {
 
   public async getId(id: string) {
     const result = await this.repository.findOneBy({ id });
-    console.log(result);
     return result;
   }
   public async update(id: string, customer: CustomerType) {
     const result = await this.repository.update({ id }, customer);
-    console.log(result);
     return result;
   }
 }

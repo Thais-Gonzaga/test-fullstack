@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import CustomersService from "../../services/customers";
 import statusCodes from "../../utils/statusCodes";
 
@@ -9,10 +9,14 @@ class CustomersController {
     this.customersService = new CustomersService();
   }
 
-  public create = async (req: Request, res: Response) => {
-    const customer = req.body;
-    await this.customersService.create(customer);
-    res.status(statusCodes.CREATED).json(customer);
+  public create = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const customer = req.body;
+      await this.customersService.create(customer);
+      res.status(statusCodes.CREATED).json(customer);
+    } catch (error) {
+      next(error);
+    }
   };
 
   public getAll = async (_req: Request, res: Response) => {
