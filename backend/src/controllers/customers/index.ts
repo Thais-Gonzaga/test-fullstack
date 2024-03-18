@@ -25,6 +25,11 @@ class CustomersController {
     const customer = await this.customersService.getId(id);
     res.status(statusCodes.OK).json(customer);
   };
+  public update = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const customer = await this.customersService.update(id, req.body);
+    res.status(statusCodes.OK).json(customer);
+  };
 }
 
 export default CustomersController;

@@ -26,6 +26,11 @@ class CustomersService {
     console.log(result);
     return result;
   }
+  public async update(id: string, customer: CustomerType) {
+    const result = await this.repository.update({ id }, customer);
+    console.log(result);
+    return result;
+  }
 }
 
 export default CustomersService;
