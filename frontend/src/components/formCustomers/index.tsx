@@ -3,21 +3,8 @@ import useSWRMutation from 'swr/mutation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from '@/components/ui/form';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Link, redirect } from 'react-router-dom';
+import { Form } from '@/components/ui/form';
+import { Link, useNavigate } from 'react-router-dom';
 import { fetcher, sendRequest } from '@/services/backend/fetcher';
 import { Customers, Status } from '@/types';
 import InputForm, { Mask } from '../inputForm';
@@ -26,6 +13,7 @@ import { useQuery } from '@/hooks/useQuery';
 import { useEffect } from 'react';
 import { validateIndividualTaxpayer } from '@/utils/validateIndividualTaxpayer';
 import { validatePhone } from '@/utils/validatePhone';
+import SelectForm from '../selectForm';
 
 export const FormSchema = z.object({
   name: z.string().min(1, {
@@ -59,6 +47,7 @@ const defaultFields = {
 };
 
 function FormCustomers() {
+  const navigate = useNavigate();
   const query = useQuery();
   const id = query.get('id') ?? '';
   const url = `/customers/${id}`;
@@ -77,7 +66,7 @@ function FormCustomers() {
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
       await trigger(data);
-      redirect('/');
+      navigate('/');
     } catch (e) {
       console.log(e);
     }
@@ -92,6 +81,7 @@ function FormCustomers() {
   }, [data]);
 
   if (isLoading) return <p>AGUARDE!</p>;
+
   return (
     <Form {...form}>
       <form
@@ -116,34 +106,13 @@ function FormCustomers() {
           placeHolder="Telefone"
           mask={Mask.PHONE}
         />
-
-        <FormField
+        <SelectForm
           control={form.control}
-          name="status"
-          render={({ field }) => (
-            <FormItem>
-              <Select
-                onValueChange={field.onChange}
-                defaultValue={data?.status}
-              >
-                <FormControl>
-                  <SelectTrigger className="w-56">
-                    <SelectValue placeholder="Status" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value={Status.ACTIVE}>Ativo</SelectItem>
-                  <SelectItem value={Status.INACTIVE}>Inativo</SelectItem>
-                  <SelectItem value={Status.DISABLED}>Desativado</SelectItem>
-                  <SelectItem value={Status.WAITING_APPROVAL}>
-                    Aguardando Aprovação
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
+          fieldName="status"
+          placeHolder="Status"
+          defaultValue={data?.status}
         />
+
         <div>
           <Button
             type="submit"
